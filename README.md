@@ -4,10 +4,11 @@
 1. [Introduction](#introduction)
 2. [Requirements](#requirements)
 3. [Notebooks](#notebooks)
-    1. [Load Data](#load-data)
-    2. [Light Runs](#light-runs)
-    3. [Heavy Runs](#heavy-runs)
-    4. [Raw Classify](#raw-classify)
+    1. [EDA](#eda)
+    2. [Load Data](#load-data)
+    3. [Light Runs](#light-runs)
+    4. [Heavy Runs](#heavy-runs)
+    5. [Raw Classify](#raw-classify)
 
 
 ## Introduction
@@ -20,6 +21,37 @@ In this repository, you'll find Jupyter notebooks related to our recent machine-
 
 ## Notebooks
 Here is an detailed explanation about each notebook file:
+
+### EDA
+This file represents the Exploratory Data Analysis (EDA) of the dataset.
+
+#### Installing and Importing Packages
+This section installs the required package MNE and imports other packages. It also loads Google Drive. If you're running this on another platform, you can bypass the cell containing google drive loading code.
+
+#### Defining Variables and Functions
+This section defines 3 types of channel names (as they will be used during the rest of the notebook). It also defines some constants like `base_path` that you must set according to the setup you have. There are some helper functions and some functions for reading and plotting different kinds of charts and topo maps, each described in the notebook.
+
+#### Drawing Signal Image
+In this section, we plotted the power of each channel in the time and the signal shape for the first trial of the first experiment of the first subject which by the way is a happy video. It shows that some channels have power way too much bigger than other channels and they are candidate to be removed. So in the next sub-section, we removed very high energy channels and repeated the same plots which led to better outcomes in terms of interpretability.
+
+#### Loading EEG Data Into MNE
+In this section, we used the popular MNE library to explore data analysis on data with more meaningful diagrams.
+
+We started with a single trial (all properties same as before) and after loading raw data, plotted raw signal, `psd` and `psd average`. Then we applied a notch filter on 50Hz and plotted the same diagrams again. The effect of the notch filter was clear in the `psd` and `psd average` plots.
+
+In the next sub-section, we plotted the energy of each channel for each of the frequency bands (Delta, Theta, Alpha, Beta, and Gamma). The effect of very high energy channels caused a problem here too because it prevented other channels from being shown properly. Then we plotted the topo map (image and gif) and also the joint topo map.
+
+In the EDA of EEG data, one of the important plots is plotting ICA components. These components show us the effect of noise on data (like blinking). We plotted 20 components to analyze them later. 
+
+After epoching data into 1s epochs each with an event of type happy, we plotted the average plot but still, high energy channels blocked the potential of data in other channels. This problem occurred even when we were plotting two concatenated happy and neutral trials.
+
+We repeated the process and plotted everything the same and as we expected, now everything started to make sense.
+
+#### Replicating Fig 6
+In this section, we plotted stacked Differential Entropy (DE) of all channels in all frequency bands but better results were shown when we removed very high energy channels.
+
+#### New ICA Plot with Channels Dropped
+In this section, we analyzed ICA components and then analyzed them using `plot_overlay` and excluded some components.
 
 ### Load Data
 **Notice: This file must be run before any of `Light Runs` or `Heavy Runs`**
